@@ -148,6 +148,7 @@ def hybrid_retrieve(query: str, top_k: int = 5) -> list[dict]:
             "confidence":      round(confidence, 4),   # 0.0 – 1.0
         })
 
+    results = [r for r in results if r["confidence"] >= 0.60]
     return results
 
 
