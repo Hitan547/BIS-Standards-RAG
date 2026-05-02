@@ -1,0 +1,25 @@
+# Create proper .gitignore
+python -c "
+content = '''*.pkl
+*.index
+__pycache__/
+.env
+*.pyc
+docs/
+standards.json
+my_results.json
+bm25.pkl
+chunks.pkl
+faiss.index
+metadata.pkl
+sources.pkl
+'''
+open('.gitignore', 'w').write(content)
+"
+
+# Remove everything that shouldn't be there
+git rm -r --cached .env __pycache__/ bm25.pkl chunks.pkl faiss.index metadata.pkl sources.pkl standards.json docs/ my_results.json
+
+# Commit the cleanup
+git add .gitignore
+git commit -m "Remove sensitive files and binaries"
