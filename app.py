@@ -3,10 +3,9 @@ app.py
 Streamlit UI for BIS Standards Recommendation Engine.
 Run: streamlit run app.py
 """
-
+import re
 import time
 import streamlit as st
-
 # Page config
 st.set_page_config(
     page_title="BIS Standards Finder",
@@ -84,7 +83,9 @@ def load_pipeline():
     from agent import run_rag_agent
     load_indexes()
     return indexes_loaded(), expanded_retrieve, hybrid_retrieve, run_rag_agent
-
+def strip_html(text: str) -> str:
+    """Remove HTML tags from chunk text before displaying."""
+    return re.sub(r'<[^>]+>', '', text or '').strip()
 
 def get_category_class(category: str) -> str:
     return f"cat-{category.lower().replace(' ', '-')}"
@@ -123,7 +124,7 @@ def render_standard_card(result: dict, rank: int):
             <span class="category-badge {cat_class}">{category}</span>
         </div>
         {confidence_bar_html(conf)}
-        <div class="rationale">{chunk[:300]}{'...' if len(chunk) > 300 else ''}</div>
+        <div class="rationale">{strip_html(chunk)[:300]}{'...' if len(strip_html(chunk)) > 300 else ''}</div>
     </div>
     """, unsafe_allow_html=True)
 
