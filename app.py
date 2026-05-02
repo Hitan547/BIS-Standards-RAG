@@ -4,6 +4,7 @@ Streamlit UI for BIS Standards Recommendation Engine.
 Run: streamlit run app.py
 """
 import re
+import html
 import time
 import streamlit as st
 # Page config
@@ -104,11 +105,13 @@ def confidence_bar_html(confidence: float) -> str:
 
 
 def render_standard_card(result: dict, rank: int):
-    std_num  = result.get("standard_number", "Unknown")
-    title    = result.get("title", "")
-    category = result.get("category", "General")
-    conf     = result.get("confidence", 0)
-    chunk    = result.get("chunk", "")
+    std_num      = result.get("standard_number", "Unknown")
+    title        = result.get("title", "")
+    category     = result.get("category", "General")
+    conf         = result.get("confidence", 0)
+    chunk        = result.get("chunk", "")
+    scope        = result.get("scope", "")
+    display_text = (scope or re.sub(r'<[^>]+>', '', chunk).replace('\n', ' ').strip())[:300]
 
     rank_class = f"rank-{rank}" if rank <= 3 else ""
     cat_class  = get_category_class(category)
@@ -124,11 +127,9 @@ def render_standard_card(result: dict, rank: int):
             <span class="category-badge {cat_class}">{category}</span>
         </div>
         {confidence_bar_html(conf)}
-        <div class="rationale">{strip_html(chunk)[:300]}{'...' if len(strip_html(chunk)) > 300 else ''}</div>
     </div>
     """, unsafe_allow_html=True)
-
-
+    st.caption(display_text + ("..." if len(display_text) == 300 else ""))
 # ── Sidebar ──
 with st.sidebar:
     st.markdown("## 🏗️ BIS Finder")
