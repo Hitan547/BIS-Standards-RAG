@@ -1,0 +1,30 @@
+# Core RAG
+faiss-cpu==1.7.4              # 1.8.0 does NOT exist on PyPI — do not change
+sentence-transformers==2.7.0  # Stable, supports BAAI/bge-small-en-v1.5
+rank-bm25==0.2.2
+ 
+# LLM + Agent
+langchain==0.2.16
+langchain-groq==0.1.9
+langchain-core==0.2.38
+langgraph==0.2.28
+groq==0.9.0
+ 
+# PDF Parsing
+pdfplumber==0.11.4
+PyMuPDF==1.24.10              # fitz — used as fallback in ingestion
+ 
+# API
+fastapi==0.115.4
+uvicorn==0.32.0
+python-multipart==0.0.12
+pydantic==2.9.2
+ 
+# UI
+streamlit==1.40.1
+ 
+# Utilities
+numpy==1.26.4
+python-dotenv==1.0.1
+tqdm==4.67.0
+ 
