@@ -150,7 +150,7 @@ with st.sidebar:
     for ex in examples:
         if st.button(ex[:55] + ("..." if len(ex) > 55 else ""),
                      key=f"ex_{ex[:20]}", use_container_width=True):
-            st.session_state["query_input"] = ex
+            st.session_state["selected_example"] = ex
 
     st.markdown("---")
     st.markdown("### ⚙️ Settings")
@@ -185,9 +185,10 @@ if not indexes_ready:
     st.stop()
 
 # Query input
+default_val = st.session_state.get("selected_example", "")
 query = st.text_area(
     "Describe your building material product:",
-    value=st.session_state.get("query_input", ""),
+    value=default_val,
     height=100,
     placeholder="e.g. '43 grade ordinary Portland cement for use in concrete structures'",
     key="query_input"
@@ -198,7 +199,7 @@ with col1:
     search_btn = st.button("🔍 Find BIS Standards", type="primary", use_container_width=True)
 with col2:
     if st.button("🗑️ Clear", use_container_width=True):
-        st.session_state["query_input"] = ""
+        st.session_state.pop("selected_example", None)
         st.rerun()
 
 # ── Results ──
